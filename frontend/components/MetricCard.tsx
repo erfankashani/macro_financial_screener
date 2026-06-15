@@ -16,7 +16,10 @@ export default function MetricCard({ metric }: { metric: MetricDetail }) {
     ...(METRIC_FAQ[metric.id] ?? []),
   ];
   return (
-    <div className="group flex min-w-0 flex-col rounded-[var(--radius-card)] border border-border bg-surface p-5 transition-colors hover:border-border-strong">
+    <div
+      id={`metric-${metric.id}`}
+      className="group flex min-w-0 scroll-mt-20 flex-col rounded-[var(--radius-card)] border border-border bg-surface p-5 transition-all hover:border-border-strong"
+    >
       <div className="flex items-start justify-between gap-3">
         <div>
           <h3 className="text-sm font-semibold text-text-strong">
