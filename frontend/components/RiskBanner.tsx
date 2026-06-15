@@ -174,12 +174,12 @@ export default function RiskBanner({ metrics }: { metrics: MetricDetail[] }) {
               <Tally n={tally.red} label="warning" color="text-down" />
             </div>
 
-            <ul className="mt-4 space-y-0.5">
+            <ul className="mt-4 max-w-sm space-y-0.5">
               {sel.items.map((m) => (
                 <li key={m.id}>
                   <button
                     onClick={() => scrollToMetric(m.id)}
-                    className="group flex w-full items-center justify-between gap-3 rounded-[var(--radius-control)] px-2 py-1.5 text-xs transition-colors hover:bg-surface-2"
+                    className="group flex w-full items-center justify-between gap-4 rounded-[var(--radius-control)] px-2 py-1.5 text-xs transition-colors hover:bg-surface-2"
                   >
                     <span className="flex items-center gap-2 text-text-muted group-hover:text-text-strong">
                       <span className={`h-1.5 w-1.5 rounded-full ${DOT[m.status]}`} />

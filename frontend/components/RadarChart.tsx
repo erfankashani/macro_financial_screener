@@ -14,7 +14,7 @@ const MAX = 3;
 
 export default function RadarChart({
   data,
-  size = 240,
+  size = 280,
   levels = 3,
 }: {
   data: RadarPoint[];
