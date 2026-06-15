@@ -125,8 +125,8 @@ export default function RadarChart({
             dy="0.32em"
             textAnchor={anchor}
             fill={d.active ? "var(--text-muted)" : "var(--text-subtle)"}
-            fillOpacity={d.active ? 1 : 0.45}
-            fontSize={9}
+            fillOpacity={d.active ? 1 : 0.5}
+            fontSize={10}
             fontWeight={d.active ? 600 : 400}
           >
             {d.label}

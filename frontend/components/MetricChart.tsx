@@ -253,7 +253,7 @@ export default function MetricChart({ metric }: { metric: MetricDetail }) {
                   y1={z.min}
                   y2={z.max}
                   fill={z.color}
-                  fillOpacity={0.12}
+                  fillOpacity={0.08}
                   ifOverflow="hidden"
                 />
               ))}

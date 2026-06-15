@@ -29,7 +29,7 @@
 
   /* Semantic (deeper for legibility on white) */
   --up: #16a34a;
-  --warn: #b45309;
+  --warn: #d97706;
   --down: #dc2626;
 
   /* Chart structural + series colors */
@@ -44,6 +44,9 @@
 
   --radius-card: 14px;
   --radius-control: 8px;
+
+  /* Subtle card lift — light only; dark uses surface fill for depth. */
+  --shadow-card: 0 1px 2px rgba(16, 24, 40, 0.04), 0 1px 3px rgba(16, 24, 40, 0.07);
 
   --page-bg: var(--bg);
   --foreground: var(--text);
@@ -80,6 +83,9 @@
   --chart-axis: #2c3a4f;
   --chart-threshold: #f87171;
   --chart-neutral-line: #e8eef6;
+
+  /* list-safe no-op so it can be composed with the hero's inset rail shadow */
+  --shadow-card: 0 0 #0000;
 
   /* one restrained ambient wash — only on dark */
   --page-bg: radial-gradient(

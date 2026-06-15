@@ -11,10 +11,12 @@ export interface MarketEvent {
   note: string;
 }
 
+// Desaturated era hues — historical context should tint, not compete with the
+// semantic green/amber/red that carry the live signal.
 export const EVENT_STYLE: Record<EventKind, { fill: string; label: string }> = {
-  recession: { fill: "#f43f5e", label: "Recession" }, // rose
-  crash: { fill: "#fb923c", label: "Crash / bear" }, // orange
-  bubble: { fill: "#a78bfa", label: "Bubble / mania" }, // violet
+  recession: { fill: "#c66b78", label: "Recession" }, // dusty rose
+  crash: { fill: "#cf9a63", label: "Crash / bear" }, // dusty amber
+  bubble: { fill: "#9990c4", label: "Bubble / mania" }, // dusty violet
 };
 
 export const MARKET_EVENTS: MarketEvent[] = [
