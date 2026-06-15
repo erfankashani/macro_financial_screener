@@ -104,14 +104,17 @@ export default function RiskBanner({ metrics }: { metrics: MetricDetail[] }) {
     red: sel.items.filter((m) => m.status === "red").length,
   };
 
-  // Radar overview spans every signal in dashboard order.
-  const radar: RadarPoint[] = sections.flatMap((s) =>
-    s.items.map((m) => ({
+  // Radar keeps every signal as an axis, but only the active section's signals
+  // carry a value/color and form the shape; the rest collapse to center.
+  const radar: RadarPoint[] = sections.flatMap((s) => {
+    const isActive = s.key === sel.key;
+    return s.items.map((m) => ({
       label: SHORT[m.id] ?? m.name,
-      value: SEVERITY[m.status],
+      value: isActive ? SEVERITY[m.status] : 0,
       color: STATUS_META[m.status].chart,
-    })),
-  );
+      active: isActive,
+    }));
+  });
 
   return (
     <section
@@ -150,10 +153,18 @@ export default function RiskBanner({ metrics }: { metrics: MetricDetail[] }) {
           })}
         </div>
 
-        <div className="mt-5 grid gap-x-10 gap-y-6 lg:grid-cols-[1.5fr_auto]">
+        <div className="mt-5 grid grid-cols-1 gap-x-8 gap-y-6 lg:grid-cols-2">
+          {/* Radar for the selected section — top on mobile, right on desktop */}
+          <div className="order-first flex flex-col items-center justify-center lg:order-last lg:border-l lg:border-border lg:pl-8">
+            <RadarChart data={radar} />
+            <p className="mt-1 text-center text-[10px] text-text-subtle">
+              {sel.tab} · outer ring = warning
+            </p>
+          </div>
+
           {/* Selected section detail */}
-          <div>
-            <p className="max-w-xl text-sm leading-relaxed text-text">
+          <div className="lg:order-first">
+            <p className="text-sm leading-relaxed text-text">
               {readFor(sel.key, sel.worst)}
             </p>
 
@@ -184,14 +195,6 @@ export default function RiskBanner({ metrics }: { metrics: MetricDetail[] }) {
                 </li>
               ))}
             </ul>
-          </div>
-
-          {/* Overview radar across all signals */}
-          <div className="flex flex-col items-center justify-center lg:border-l lg:border-border lg:pl-10">
-            <RadarChart data={radar} />
-            <p className="mt-1 text-center text-[10px] text-text-subtle">
-              Risk radar · outer ring = warning
-            </p>
           </div>
         </div>
       </div>

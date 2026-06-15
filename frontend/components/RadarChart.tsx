@@ -1,19 +1,20 @@
-// Dependency-free SVG radar — an at-a-glance "risk shape" across all signals.
-// Each axis is one metric; the spoke length is its severity (calm -> warning),
-// so a calm market draws a small blob and a stressed one bulges outward.
-// Points are colored by each metric's semantic status.
+// Dependency-free SVG radar — an at-a-glance "risk shape" for the selected
+// section. The full web of every signal stays put so shapes are comparable, but
+// only the active section's signals carry a value and color; the rest collapse
+// to the center (no contribution) and dim out.
 
 export interface RadarPoint {
   label: string;
-  value: number; // 1 = calm, 2 = caution, 3 = warning
+  value: number; // 1 = calm, 2 = caution, 3 = warning; 0 when inactive
   color: string; // semantic status hex
+  active: boolean;
 }
 
 const MAX = 3;
 
 export default function RadarChart({
   data,
-  size = 230,
+  size = 240,
   levels = 3,
 }: {
   data: RadarPoint[];
@@ -25,9 +26,8 @@ export default function RadarChart({
 
   const cx = size / 2;
   const cy = size / 2;
-  const radius = size / 2 - 34; // leave room for axis labels
+  const radius = size / 2 - 36; // leave room for axis labels
 
-  // Axis i points start-up then clockwise.
   const angle = (i: number) => (i / n) * Math.PI * 2 - Math.PI / 2;
   const pt = (i: number, r: number) => ({
     x: cx + r * Math.cos(angle(i)),
@@ -42,10 +42,13 @@ export default function RadarChart({
       })
       .join(" ") + " Z";
 
+  const valuePt = (i: number, d: RadarPoint) =>
+    pt(i, (Math.max(0, Math.min(MAX, d.value)) / MAX) * radius);
+
   const dataPath =
     data
       .map((d, i) => {
-        const p = pt(i, (Math.max(0, Math.min(MAX, d.value)) / MAX) * radius);
+        const p = valuePt(i, d);
         return `${i === 0 ? "M" : "L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`;
       })
       .join(" ") + " Z";
@@ -53,11 +56,12 @@ export default function RadarChart({
   return (
     <svg
       viewBox={`0 0 ${size} ${size}`}
-      width={size}
+      width="100%"
       height={size}
+      style={{ maxWidth: size }}
       className="overflow-visible"
       role="img"
-      aria-label="Risk radar across all signals"
+      aria-label="Risk radar for the selected section"
     >
       {/* concentric webs */}
       {Array.from({ length: levels }).map((_, l) => (
@@ -71,8 +75,8 @@ export default function RadarChart({
         />
       ))}
 
-      {/* spokes */}
-      {data.map((_, i) => {
+      {/* spokes — dimmer for inactive signals */}
+      {data.map((d, i) => {
         const p = pt(i, radius);
         return (
           <line
@@ -83,12 +87,12 @@ export default function RadarChart({
             y2={p.y}
             stroke="var(--border)"
             strokeWidth={1}
-            strokeOpacity={0.5}
+            strokeOpacity={d.active ? 0.6 : 0.25}
           />
         );
       })}
 
-      {/* severity polygon */}
+      {/* active-section shape */}
       <path
         d={dataPath}
         fill="var(--accent)"
@@ -98,17 +102,18 @@ export default function RadarChart({
         strokeOpacity={0.7}
       />
 
-      {/* status-colored points */}
+      {/* points — only active signals are plotted, in their status color */}
       {data.map((d, i) => {
-        const p = pt(i, (Math.max(0, Math.min(MAX, d.value)) / MAX) * radius);
+        if (!d.active) return null;
+        const p = valuePt(i, d);
         return (
           <circle key={`pt-${i}`} cx={p.x} cy={p.y} r={3.5} fill={d.color} />
         );
       })}
 
-      {/* axis labels */}
+      {/* axis labels — active full, inactive dimmed */}
       {data.map((d, i) => {
-        const p = pt(i, radius + 12);
+        const p = pt(i, radius + 13);
         const a = angle(i);
         const anchor =
           Math.cos(a) > 0.3 ? "start" : Math.cos(a) < -0.3 ? "end" : "middle";
@@ -119,8 +124,10 @@ export default function RadarChart({
             y={p.y}
             dy="0.32em"
             textAnchor={anchor}
-            fill="var(--text-subtle)"
+            fill={d.active ? "var(--text-muted)" : "var(--text-subtle)"}
+            fillOpacity={d.active ? 1 : 0.45}
             fontSize={9}
+            fontWeight={d.active ? 600 : 400}
           >
             {d.label}
           </text>
