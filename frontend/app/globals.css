@@ -1,21 +1,72 @@
 @import "tailwindcss";
 
+/*
+ * Design tokens — one neutral ramp + one accent + semantic status colors.
+ * Everything in the UI traces back to these so the system, not memory,
+ * enforces restraint. (front-end-designer skill, Phase 3.)
+ */
 :root {
-  --background: #0a0e14;
-  --foreground: #e6edf3;
+  /* Surfaces: background -> surface -> elevated, each a deliberate step. */
+  --bg: #0a0e14;
+  --surface: #111722;
+  --surface-2: #161d2b;
+  --elevated: #1b2433;
+  --border: #1f2937;
+  --border-strong: #2c3a4f;
+
+  /* Text ramp by role, not by color. */
+  --text-strong: #e8eef6;
+  --text: #c2cdda;
+  --text-muted: #8593a6;
+  --text-subtle: #5c6a7e;
+
+  /* One accent for interactive emphasis. */
+  --accent: #38bdf8;
+  --accent-soft: rgba(56, 189, 248, 0.14);
+
+  /* Semantic — used ONLY to encode state (calm / caution / warning). */
+  --up: #34d399;
+  --warn: #fbbf24;
+  --down: #fb7185;
+
+  --radius-card: 14px;
+  --radius-control: 8px;
+
+  --foreground: var(--text);
+  --background: var(--bg);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-elevated: var(--elevated);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text-strong: var(--text-strong);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-text-subtle: var(--text-subtle);
+  --color-accent: var(--accent);
+  --color-up: var(--up);
+  --color-warn: var(--warn);
+  --color-down: var(--down);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 body {
+  /* One restrained, intentional ambient wash — not decorative gradient soup. */
   background:
-    radial-gradient(1100px 560px at 85% -15%, rgba(56, 189, 248, 0.08), transparent),
-    var(--background);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+    radial-gradient(1200px 600px at 50% -10%, rgba(56, 189, 248, 0.06), transparent 70%),
+    var(--bg);
+  color: var(--text);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Tabular figures everywhere data appears — digits must align. */
+.nums {
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1;
 }

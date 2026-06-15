@@ -86,25 +86,25 @@ function ChartTooltip({ active, label, payload, unit }: TipProps) {
   if (!active || !payload?.length || label == null) return null;
   const ev = eventAt(label);
   return (
-    <div className="rounded-lg border border-slate-700 bg-slate-900/95 px-3 py-2 text-xs shadow-lg">
-      <div className="text-slate-400">
+    <div className="rounded-[var(--radius-control)] border border-border-strong bg-elevated/95 px-3 py-2 text-xs shadow-xl backdrop-blur">
+      <div className="text-text-muted">
         {new Date(label).toLocaleDateString("en-US", {
           year: "numeric",
           month: "short",
           day: "numeric",
         })}
       </div>
-      <div className="font-semibold text-slate-100">
+      <div className="nums font-semibold text-text-strong">
         {Number(payload[0].value).toLocaleString()}{" "}
-        <span className="font-normal text-slate-500">{unit}</span>
+        <span className="font-normal text-text-subtle">{unit}</span>
       </div>
       {ev && (
         <div
-          className="mt-1 max-w-[200px] border-t border-slate-700 pt-1"
+          className="mt-1 max-w-[200px] border-t border-border pt-1"
           style={{ color: EVENT_STYLE[ev.kind].fill }}
         >
           <div className="font-medium">{ev.name}</div>
-          <div className="mt-0.5 text-[11px] leading-snug text-slate-400">
+          <div className="mt-0.5 text-[11px] leading-snug text-text-muted">
             {ev.note}
           </div>
         </div>
@@ -202,10 +202,10 @@ export default function MetricChart({ metric }: { metric: MetricDetail }) {
             <button
               key={r}
               onClick={() => setRange(r)}
-              className={`rounded-md px-2 py-0.5 text-[11px] font-medium transition-colors ${
+              className={`rounded-[var(--radius-control)] px-2 py-0.5 text-[11px] font-medium transition-colors ${
                 range === r
-                  ? "bg-sky-500/20 text-sky-300"
-                  : "text-slate-500 hover:text-slate-300"
+                  ? "bg-accent/15 text-accent"
+                  : "text-text-subtle hover:text-text"
               }`}
             >
               {r}
@@ -215,10 +215,10 @@ export default function MetricChart({ metric }: { metric: MetricDetail }) {
         {hasOverlay && (
           <button
             onClick={() => setShowMA((v) => !v)}
-            className={`rounded-md border px-2 py-0.5 text-[11px] font-medium transition-colors ${
+            className={`rounded-[var(--radius-control)] border px-2 py-0.5 text-[11px] font-medium transition-colors ${
               showMA
-                ? "border-sky-400/40 bg-sky-500/20 text-sky-300"
-                : "border-slate-700 text-slate-400 hover:text-slate-200"
+                ? "border-accent/40 bg-accent/15 text-accent"
+                : "border-border text-text-muted hover:text-text"
             }`}
           >
             {metric.overlay_label ?? "4-week avg"}
@@ -243,7 +243,7 @@ export default function MetricChart({ metric }: { metric: MetricDetail }) {
                 </linearGradient>
               </defs>
             )}
-            <CartesianGrid stroke="#1e293b" strokeDasharray="3 3" vertical={false} />
+            <CartesianGrid stroke="#1f2937" strokeOpacity={0.6} strokeDasharray="2 4" vertical={false} />
             {isFearGreed &&
               FEAR_GREED_ZONES.map((z) => (
                 <ReferenceArea
@@ -303,13 +303,13 @@ export default function MetricChart({ metric }: { metric: MetricDetail }) {
               scale="time"
               domain={["dataMin", "dataMax"]}
               tickFormatter={(ts) => new Date(ts).getFullYear().toString()}
-              tick={{ fill: "#94a3b8", fontSize: 11 }}
-              stroke="#334155"
+              tick={{ fill: "#8593a6", fontSize: 11 }}
+              stroke="#2c3a4f"
               minTickGap={50}
             />
             <YAxis
-              tick={{ fill: "#94a3b8", fontSize: 11 }}
-              stroke="#334155"
+              tick={{ fill: "#8593a6", fontSize: 11 }}
+              stroke="#2c3a4f"
               width={44}
               tickFormatter={axisTick}
               domain={isFearGreed ? [0, 100] : ["auto", "auto"]}
