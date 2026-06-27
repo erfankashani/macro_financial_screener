@@ -9,28 +9,28 @@ export const STATUS_META: Record<
     dot: "bg-up",
     text: "text-up",
     border: "border-up/30",
-    chart: "#34d399",
+    chart: "var(--chart-up)",
   },
   amber: {
     label: "Caution",
     dot: "bg-warn",
     text: "text-warn",
     border: "border-warn/30",
-    chart: "#fbbf24",
+    chart: "var(--chart-warn)",
   },
   red: {
     label: "Warning",
     dot: "bg-down",
     text: "text-down",
     border: "border-down/40",
-    chart: "#fb7185",
+    chart: "var(--chart-down)",
   },
   unknown: {
     label: "No data",
     dot: "bg-[var(--text-subtle)]",
     text: "text-text-muted",
     border: "border-border",
-    chart: "#8593a6",
+    chart: "var(--chart-none)",
   },
 };
 

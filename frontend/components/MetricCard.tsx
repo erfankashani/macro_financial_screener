@@ -18,7 +18,7 @@ export default function MetricCard({ metric }: { metric: MetricDetail }) {
   return (
     <div
       id={`metric-${metric.id}`}
-      className="group flex min-w-0 scroll-mt-20 flex-col rounded-[var(--radius-card)] border border-border bg-surface p-5 transition-all hover:border-border-strong"
+      className="group flex min-w-0 scroll-mt-20 flex-col rounded-[var(--radius-card)] border border-border bg-surface p-5 shadow-[var(--shadow-card)] transition-all hover:border-border-strong"
     >
       <div className="flex items-start justify-between gap-3">
         <div>

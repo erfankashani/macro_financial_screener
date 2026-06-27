@@ -15,10 +15,10 @@ export default function FearGreedGauge({ value }: { value: number }) {
           className="absolute top-0 z-10 -translate-x-1/2"
           style={{ left: `${v}%` }}
         >
-          <div className="mx-auto h-0 w-0 border-l-4 border-r-4 border-t-[5px] border-l-transparent border-r-transparent border-t-slate-100" />
+          <div className="mx-auto h-0 w-0 border-l-4 border-r-4 border-t-[5px] border-l-transparent border-r-transparent border-t-[var(--text-strong)]" />
         </div>
         <div
-          className="absolute bottom-0 top-2 z-10 w-px -translate-x-1/2 bg-slate-100/80"
+          className="absolute bottom-0 top-2 z-10 w-px -translate-x-1/2 bg-[var(--text-strong)]/70"
           style={{ left: `${v}%` }}
         />
         {/* segmented bar */}
@@ -36,7 +36,7 @@ export default function FearGreedGauge({ value }: { value: number }) {
         <span className="text-xs font-semibold" style={{ color: zone.color }}>
           {zone.label}
         </span>
-        <span className="text-[9px] text-slate-500">0–100</span>
+        <span className="text-[9px] text-text-subtle">0–100</span>
       </div>
     </div>
   );

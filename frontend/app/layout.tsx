@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { cookies } from "next/headers";
 import "./globals.css";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,15 +20,19 @@ export const metadata: Metadata = {
     "A one-glance morning read on macro risk: recession-onset, credit stress, labor, the business cycle, and long-run valuation.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Persisted theme is read server-side from a cookie, so the correct theme is
+  // rendered in the initial HTML — no flash, no client boot script. Light is the
+  // default when nothing is stored.
+  const isDark = (await cookies()).get("theme")?.value === "dark";
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${isDark ? "dark" : ""} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-background text-text">
         {/* Slim, sticky product bar — gives the app a fixed frame of reference. */}
@@ -41,9 +47,12 @@ export default function RootLayout({
                 Macro Screener
               </span>
             </div>
-            <span className="hidden text-xs text-text-muted sm:inline">
-              Daily macro-risk read
-            </span>
+            <div className="flex items-center gap-3">
+              <span className="hidden text-xs text-text-muted sm:inline">
+                Daily macro-risk read
+              </span>
+              <ThemeToggle />
+            </div>
           </div>
         </header>
         {children}

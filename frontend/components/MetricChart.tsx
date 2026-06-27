@@ -27,9 +27,9 @@ const FAST_RANGES: Range[] = ["1W", "1M", "1Y", "MAX"];
 // Fast-moving daily metrics get short-window options + a shorter default.
 const FAST_METRIC_IDS = ["fear_greed", "vix"];
 
-const GREEN = "#34d399";
-const AMBER = "#f59e0b";
-const RED = "#ef4444";
+const GREEN = "var(--chart-up)";
+const AMBER = "var(--chart-warn)";
+const RED = "var(--chart-down)";
 
 /** Gradient stops that color a line green below a threshold, amber→red above. */
 function thresholdGradientStops(
@@ -166,7 +166,7 @@ export default function MetricChart({ metric }: { metric: MetricDetail }) {
 
   if (all.length === 0) {
     return (
-      <div className="flex h-[210px] items-center justify-center text-sm text-slate-500">
+      <div className="flex h-[210px] items-center justify-center text-sm text-text-subtle">
         No series data
       </div>
     );
@@ -243,7 +243,7 @@ export default function MetricChart({ metric }: { metric: MetricDetail }) {
                 </linearGradient>
               </defs>
             )}
-            <CartesianGrid stroke="#1f2937" strokeOpacity={0.6} strokeDasharray="2 4" vertical={false} />
+            <CartesianGrid stroke="var(--chart-grid)" strokeOpacity={0.9} strokeDasharray="2 4" vertical={false} />
             {isFearGreed &&
               FEAR_GREED_ZONES.map((z) => (
                 <ReferenceArea
@@ -253,7 +253,7 @@ export default function MetricChart({ metric }: { metric: MetricDetail }) {
                   y1={z.min}
                   y2={z.max}
                   fill={z.color}
-                  fillOpacity={0.12}
+                  fillOpacity={0.08}
                   ifOverflow="hidden"
                 />
               ))}
@@ -272,13 +272,13 @@ export default function MetricChart({ metric }: { metric: MetricDetail }) {
               <ReferenceLine
                 key={`thr-${i}`}
                 y={l.value}
-                stroke="#f87171"
+                stroke="var(--chart-threshold)"
                 strokeDasharray="4 4"
                 strokeOpacity={0.55}
                 label={{
                   value: l.label,
                   position: "insideTopRight",
-                  fill: "#fca5a5",
+                  fill: "var(--chart-threshold)",
                   fontSize: 10,
                 }}
               />
@@ -292,7 +292,7 @@ export default function MetricChart({ metric }: { metric: MetricDetail }) {
                 label={{
                   value: "400k rule of thumb",
                   position: "insideTopRight",
-                  fill: "#fbbf24",
+                  fill: "var(--chart-warn)",
                   fontSize: 10,
                 }}
               />
@@ -303,13 +303,13 @@ export default function MetricChart({ metric }: { metric: MetricDetail }) {
               scale="time"
               domain={["dataMin", "dataMax"]}
               tickFormatter={(ts) => new Date(ts).getFullYear().toString()}
-              tick={{ fill: "#8593a6", fontSize: 11 }}
-              stroke="#2c3a4f"
+              tick={{ fill: "var(--text-muted)", fontSize: 11 }}
+              stroke="var(--chart-axis)"
               minTickGap={50}
             />
             <YAxis
-              tick={{ fill: "#8593a6", fontSize: 11 }}
-              stroke="#2c3a4f"
+              tick={{ fill: "var(--text-muted)", fontSize: 11 }}
+              stroke="var(--chart-axis)"
               width={44}
               tickFormatter={axisTick}
               domain={isFearGreed ? [0, 100] : ["auto", "auto"]}
@@ -317,13 +317,17 @@ export default function MetricChart({ metric }: { metric: MetricDetail }) {
             />
             <Tooltip
               content={<ChartTooltip unit={metric.unit} />}
-              cursor={{ stroke: "#475569", strokeWidth: 1 }}
+              cursor={{ stroke: "var(--border-strong)", strokeWidth: 1 }}
             />
             <Line
               type="monotone"
               dataKey="value"
               stroke={
-                isClaims ? `url(#${gradId})` : isFearGreed ? "#e2e8f0" : color
+                isClaims
+                  ? `url(#${gradId})`
+                  : isFearGreed
+                    ? "var(--chart-neutral-line)"
+                    : color
               }
               strokeWidth={1.8}
               dot={false}
@@ -334,7 +338,7 @@ export default function MetricChart({ metric }: { metric: MetricDetail }) {
                 data={overlayData}
                 type="monotone"
                 dataKey="value"
-                stroke="#38bdf8"
+                stroke="var(--accent)"
                 strokeWidth={1.6}
                 dot={false}
                 isAnimationActive={false}

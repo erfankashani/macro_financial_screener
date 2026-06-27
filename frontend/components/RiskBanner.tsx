@@ -119,7 +119,7 @@ export default function RiskBanner({ metrics }: { metrics: MetricDetail[] }) {
   return (
     <section
       className="relative overflow-hidden rounded-[var(--radius-card)] border border-border bg-surface"
-      style={{ boxShadow: "inset 4px 0 0 0 " + RAIL[sel.worst] }}
+      style={{ boxShadow: `inset 4px 0 0 0 ${RAIL[sel.worst]}, var(--shadow-card)` }}
     >
       <div className="p-7 pl-8">
         <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-text-muted">
@@ -164,7 +164,7 @@ export default function RiskBanner({ metrics }: { metrics: MetricDetail[] }) {
 
           {/* Selected section detail */}
           <div className="lg:order-first">
-            <p className="text-sm leading-relaxed text-text">
+            <p className="max-w-md text-[17px] font-medium leading-snug text-text-strong">
               {readFor(sel.key, sel.worst)}
             </p>
 
